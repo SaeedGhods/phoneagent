@@ -109,11 +109,33 @@ app.post('/process-speech', async (req, res) => {
 
     const twiml = new twilio.twiml.VoiceResponse();
 
-    // Respond with the AI-generated text
-    twiml.say({
-      voice: 'alice',
-      language: 'en-US'
-    }, result.text);
+    // Generate TTS audio with custom voice
+    try {
+      const ttsResult = await ttsService.generateSpeech(result.text);
+      if (!ttsResult.error && ttsResult.audioBuffer) {
+        // Convert audio buffer to base64 data URL
+        const audioBase64 = ttsResult.audioBuffer.toString('base64');
+        const audioDataUrl = `data:audio/mpeg;base64,${audioBase64}`;
+
+        // Play the custom voice audio
+        twiml.play(audioDataUrl);
+        console.log(`Playing custom voice audio for call ${callSid}`);
+      } else {
+        // Fallback to Twilio TTS if custom voice fails
+        console.log(`Custom voice failed, using Twilio TTS for call ${callSid}`);
+        twiml.say({
+          voice: 'alice',
+          language: 'en-US'
+        }, result.text);
+      }
+    } catch (ttsError) {
+      console.error('TTS error during call:', ttsError);
+      // Fallback to Twilio TTS
+      twiml.say({
+        voice: 'alice',
+        language: 'en-US'
+      }, result.text);
+    }
 
     // Continue the conversation
     twiml.gather({
