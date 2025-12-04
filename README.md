@@ -56,6 +56,7 @@ XAI_API_KEY=your_xai_api_key
 
 # ElevenLabs Configuration
 ELEVENLABS_API_KEY=your_elevenlabs_api_key
+ELEVENLABS_VOICE_ID=your_custom_voice_id
 
 # Server Configuration
 PORT=3000
@@ -93,7 +94,19 @@ The server will start on `http://localhost:3000`.
 
 1. **Sign Up**: Create an account at [elevenlabs.io](https://elevenlabs.io/)
 2. **Generate API Key**: Get your API key from the dashboard
-3. **Add to Environment**: Set `ELEVENLABS_API_KEY` in your environment variables
+3. **Choose/Create Voice**: Select a voice or create a custom one
+4. **Get Voice ID**: Copy the voice ID from your voice settings
+5. **Add to Environment**:
+   ```env
+   ELEVENLABS_API_KEY=your_elevenlabs_api_key
+   ELEVENLABS_VOICE_ID=your_custom_voice_id
+   ```
+
+   **Finding Your Voice ID:**
+   - Go to your ElevenLabs dashboard
+   - Select your voice
+   - The Voice ID is in the URL or voice settings (e.g., `vNMrLUsuine0PKbqufIe`)
+   - If not set, the system will use Rachel as default
 
 ### Render Deployment
 
