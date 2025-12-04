@@ -236,6 +236,19 @@ app.post('/test-tts', async (req, res) => {
   }
 });
 
+app.get('/test-voice', async (req, res) => {
+  try {
+    const validation = await ttsService.validateVoice();
+    res.json({
+      currentVoiceId: ttsService.voiceId,
+      validation: validation
+    });
+  } catch (error) {
+    console.error('Voice validation error:', error);
+    res.status(500).json({ error: 'Voice validation failed' });
+  }
+});
+
 // Cleanup old conversations every hour
 setInterval(() => {
   conversationManager.cleanupOldConversations();
