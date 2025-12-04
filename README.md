@@ -54,12 +54,48 @@ An AI-powered telephone agent built with multiple services for intelligent voice
 
 ## Deployment to Render
 
-1. Push your code to GitHub
-2. Connect your GitHub repo to Render
-3. Set environment variables in Render dashboard
-4. Configure webhook URLs in Twilio:
-   - Voice URL: `https://your-app-name.onrender.com/voice`
-   - Fallback URL: `https://your-app-name.onrender.com/voice`
+### Option 1: Using Render Dashboard (Recommended)
+
+1. **Connect your GitHub repository:**
+   - Go to [Render](https://render.com)
+   - Click "New" → "Web Service"
+   - Connect your GitHub account and select the `phoneagent` repository
+
+2. **Configure the service:**
+   - **Name:** phoneagent (or your preferred name)
+   - **Runtime:** Node
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+
+3. **Set environment variables:**
+   In the Render dashboard, add these environment variables:
+   ```
+   TWILIO_ACCOUNT_SID=your_twilio_account_sid
+   TWILIO_AUTH_TOKEN=your_twilio_auth_token
+   TWILIO_PHONE_NUMBER=your_twilio_phone_number
+   XAI_API_KEY=your_xai_api_key
+   ELEVENLABS_API_KEY=your_elevenlabs_api_key (optional)
+   USE_ELEVENLABS_TTS=false (set to true to use ElevenLabs TTS)
+   NODE_ENV=production
+   ```
+
+4. **Deploy:**
+   - Click "Create Web Service"
+   - Render will build and deploy your application
+
+5. **Configure Twilio webhooks:**
+   After deployment, note your service URL (e.g., `https://phoneagent.onrender.com`)
+   In your Twilio Console → Phone Numbers → Your number:
+   - **Voice URL:** `https://your-app-name.onrender.com/voice`
+   - **Fallback URL:** `https://your-app-name.onrender.com/voice`
+
+### Option 2: Using render.yaml (Blueprint)
+
+If you prefer using Render's blueprint deployment:
+
+1. Ensure `render.yaml` is in your repository root
+2. Follow the same steps above, but Render will automatically configure based on the blueprint
+3. Manually set the secret environment variables (API keys) in the dashboard
 
 ## Architecture
 
